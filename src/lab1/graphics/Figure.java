@@ -1,12 +1,9 @@
 package lab1.graphics;
 
-public class SquareAbleGeometryFigures extends GeometryFigure {
+public abstract class Figure extends Drawable {
     private double square;
-    public SquareAbleGeometryFigures() {
-        calculateSquare();
-    }
 
-    public void calculateSquare() {}
+    abstract public void calculateSquare();
 
     public void setSquare(double square){
         this.square = square;
@@ -16,7 +13,7 @@ public class SquareAbleGeometryFigures extends GeometryFigure {
         return square;
     }
 
-    public void expandTo(){}
+    abstract public void expandTo();
 
     @Override
     public String toString() {

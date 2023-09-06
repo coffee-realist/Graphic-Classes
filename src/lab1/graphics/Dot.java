@@ -1,7 +1,7 @@
 package lab1.graphics;
 
-public class Dot extends GeometryFigure {
-    private int x, y;
+public class Dot extends Drawable {
+        private int x, y;
 
     public Dot(int x, int y) {
         this.x = x;
@@ -33,4 +33,7 @@ public class Dot extends GeometryFigure {
     public String toString() {
         return String.format("Точка (%d; %d).", getX(), getY());
     }
+
+    @Override
+    public void draw() {}
 }

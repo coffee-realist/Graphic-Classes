@@ -1,16 +1,19 @@
 package lab1.graphics;
+
 import java.lang.Math;
 
-public class Ellipse extends SquareAbleGeometryFigures {
+public class Ellipse extends Figure {
     private final int small_radius;
     private final int big_radius;
+    private final int rotate_angle;
     private double square;
-    private final Dot center;
+    private Dot center;
 
-    public Ellipse(Dot center, int small_radius, int big_radius) {
+    public Ellipse(Dot center, int small_radius, int big_radius, int rotate_angle) {
         this.small_radius = small_radius;
         this.big_radius = big_radius;
         this.center = center;
+        this.rotate_angle = rotate_angle;
         calculateSquare();
     }
 
@@ -26,9 +29,27 @@ public class Ellipse extends SquareAbleGeometryFigures {
         return big_radius;
     }
 
+    public int getRotate_angle() {
+        return rotate_angle;
+    }
+
+    public void setCenter(Dot center) {
+        this.center = center;
+    }
+
     @Override
     public void calculateSquare() {
         setSquare(Math.PI * small_radius * big_radius);
+    }
+
+    public void move(int delta_x, int delta_y) {
+        Dot current_center = getCenter();
+        setCenter(new Dot(current_center.getX() + delta_x, current_center.getY() + delta_y));
+    }
+
+    @Override
+    public void expandTo() {
+
     }
 
     @Override
@@ -38,7 +59,12 @@ public class Ellipse extends SquareAbleGeometryFigures {
                 Координаты центра: %s
                 Малая полуось: %d.
                 Большая полуось: %d.
-                Площадь: %f""", getCenter().toString(), getSmall_radius(), getBig_radius(), getSquare());
+                Угол поворота: %d,
+                Площадь: %f""", getCenter().toString(), getSmall_radius(), getBig_radius(), getRotate_angle(), getSquare());
+    }
+
+    @Override
+    public void draw() {
     }
 }
 
