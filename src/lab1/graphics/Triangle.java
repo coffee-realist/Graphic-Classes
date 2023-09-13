@@ -42,7 +42,8 @@ public class Triangle extends Figure {
                 (getDot3().getX() - getDot1().getX()) * (getDot2().getY() - getDot1().getY()))) * 0.5);
     }
 
-    public void move(int delta_x, int delta_y) {
+    @Override
+    public void move(double delta_x, double delta_y) {
         Dot dot = getDot1();
         setDot1(new Dot(dot.getX() + delta_x, dot.getY() + delta_y));
         dot = getDot2();
@@ -51,10 +52,30 @@ public class Triangle extends Figure {
         setDot3(new Dot(dot.getX() + delta_x, dot.getY() + delta_y));
     }
 
+    public Ellipse getCircumscribedCircle() {
+        // (p,t) (q,u) (s,z) for x^2 + y^2 + Ax + By + C
+        double p = getDot1().getX(), t = getDot1().getY(), q = getDot2().getX(), u = getDot2().getY(),
+                s = getDot3().getX(), z = getDot3().getY();
+        double v = (q - p) * z + (p - s) * u + (s - q) * t;
+        double A = ((u - t) * z * z + (-u * u + t * t - q * q + p * p) * z + t * u * u + (-t * t + s * s - p * p) * u + (q * q - s * s) * t) / v;
+        double B = -((q - p) * z * z + (p - s) * u * u + (s - q) * t * t + (q - p) * s * s + (p * p - q * q) * s + p * q * q - p * p * q) / v;
+        double center_x = -A * 0.5;
+        double center_y = -B * 0.5;
+        double radius = Math.sqrt(Math.pow(p - center_x, 2)+ Math.pow(t - center_y, 2));
+        return new Ellipse(new Dot(center_x, center_y), radius, radius, 0);
+    }
 
     @Override
-    public void expandTo() {
-
+    public void expandTo(double multiplier) {
+        double mass_center_x = (getDot1().getX() + getDot2().getX() + getDot3().getX()) / 3;
+        double mass_center_y = (getDot1().getY() + getDot2().getY() + getDot3().getY()) / 3;
+        setDot1(new Dot((getDot1().getX() - mass_center_x) * multiplier,
+                (getDot1().getY() - mass_center_y) * multiplier));
+        setDot2(new Dot((getDot2().getX() - mass_center_x) * multiplier,
+                (getDot2().getY() - mass_center_y) * multiplier));
+        setDot3(new Dot((getDot3().getX() - mass_center_x) * multiplier,
+                (getDot3().getY() - mass_center_y) * multiplier));
+        calculateSquare();
     }
 
     @Override
