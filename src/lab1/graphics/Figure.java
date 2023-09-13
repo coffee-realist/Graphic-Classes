@@ -13,7 +13,8 @@ public abstract class Figure extends Drawable {
         return square;
     }
 
-    abstract public void expandTo();
+    abstract public void expandTo(double multiplier);
+    abstract public void move(double delta_x, double delta_y);
 
     @Override
     public String toString() {
