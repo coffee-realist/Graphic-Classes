@@ -1,37 +1,37 @@
 package lab1.graphics;
 
 public class Dot extends Drawable {
-        private int x, y;
+        private double x, y;
 
-    public Dot(int x, int y) {
+    public Dot(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public void move(int delta_x, int delta_y) {
+    public void move(double delta_x, double delta_y) {
         setX(getX() + delta_x);
         setY(getY() + delta_y);
     }
 
     @Override
     public String toString() {
-        return String.format("Точка (%d; %d).", getX(), getY());
+        return String.format("Точка (%f; %f).", getX(), getY());
     }
 
     @Override
