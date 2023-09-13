@@ -3,17 +3,16 @@ package lab1.graphics;
 import java.lang.Math;
 
 public class Ellipse extends Figure {
-    private final int small_radius;
-    private final int big_radius;
-    private final int rotate_angle;
+    private double small_radius, big_radius;
+    private final double rotation;
     private double square;
     private Dot center;
 
-    public Ellipse(Dot center, int small_radius, int big_radius, int rotate_angle) {
+    public Ellipse(Dot center, double small_radius, double big_radius, double rotation) {
         this.small_radius = small_radius;
         this.big_radius = big_radius;
         this.center = center;
-        this.rotate_angle = rotate_angle;
+        this.rotation = rotation;
         calculateSquare();
     }
 
@@ -21,20 +20,28 @@ public class Ellipse extends Figure {
         return center;
     }
 
-    public int getSmall_radius() {
+    public double getSmall_radius() {
         return small_radius;
     }
 
-    public int getBig_radius() {
+    public double getBig_radius() {
         return big_radius;
     }
 
-    public int getRotate_angle() {
-        return rotate_angle;
+    public double getRotation() {
+        return rotation;
     }
 
     public void setCenter(Dot center) {
         this.center = center;
+    }
+
+    public void setSmall_radius(double small_radius) {
+        this.small_radius = small_radius;
+    }
+
+    public void setBig_radius(double big_radius) {
+        this.big_radius = big_radius;
     }
 
     @Override
@@ -42,25 +49,29 @@ public class Ellipse extends Figure {
         setSquare(Math.PI * small_radius * big_radius);
     }
 
-    public void move(int delta_x, int delta_y) {
+    @Override
+    public void expandTo(double multiplier) {
+        setSmall_radius(getSmall_radius() * multiplier);
+        setBig_radius(getBig_radius() * multiplier);
+        calculateSquare();
+    }
+
+    @Override
+    public void move(double delta_x, double delta_y) {
         Dot current_center = getCenter();
         setCenter(new Dot(current_center.getX() + delta_x, current_center.getY() + delta_y));
     }
 
-    @Override
-    public void expandTo() {
-
-    }
 
     @Override
     public String toString() {
         return String.format("""
                 Класс Эллипса.
                 Координаты центра: %s
-                Малая полуось: %d.
-                Большая полуось: %d.
-                Угол поворота: %d,
-                Площадь: %f""", getCenter().toString(), getSmall_radius(), getBig_radius(), getRotate_angle(), getSquare());
+                Малая полуось: %f.
+                Большая полуось: %f.
+                Угол поворота: %f,
+                Площадь: %f""", getCenter().toString(), getSmall_radius(), getBig_radius(), getRotation(), getSquare());
     }
 
     @Override
