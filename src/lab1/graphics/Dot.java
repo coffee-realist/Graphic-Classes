@@ -4,6 +4,7 @@ public class Dot extends Drawable {
         private double x, y;
 
     public Dot(double x, double y) {
+        check(x, y);
         this.x = x;
         this.y = y;
     }
@@ -29,6 +30,10 @@ public class Dot extends Drawable {
         setY(getY() + delta_y);
     }
 
+    public void check(double x1, double y1) {
+        if (x1 < 0 || y1 < 0)
+            throw new RuntimeException("Координаты не могут быть отрицательными. Пожалуйста задайте другие координаты");
+    }
     @Override
     public String toString() {
         return String.format("Точка (%f; %f).", getX(), getY());
