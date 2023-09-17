@@ -6,6 +6,10 @@ public class Triangle extends Figure {
     private Dot dot1, dot2, dot3;
 
     public Triangle(Dot dot1, Dot dot2, Dot dot3) {
+        double a = Math.sqrt(Math.pow(dot1.getX() - dot2.getX(), 2) + Math.pow(dot1.getY() - dot2.getY(), 2));
+        double b = Math.sqrt(Math.pow(dot1.getX() - dot3.getX(), 2) + Math.pow(dot1.getY() - dot3.getY(), 2));
+        double c = Math.sqrt(Math.pow(dot2.getX() - dot3.getX(), 2) + Math.pow(dot2.getY() - dot3.getY(), 2));
+        check(dot1, dot2, dot3, a, b, c);
         this.dot1 = dot1;
         this.dot2 = dot2;
         this.dot3 = dot3;
@@ -36,6 +40,14 @@ public class Triangle extends Figure {
         this.dot3 = dot3;
     }
 
+    public void check(Dot d1, Dot d2, Dot d3, double a, double b, double c) {
+        if (d1.getX() < 0 || d1.getY() < 0 || d2.getX() < 0 || d2.getY() < 0 ||
+                d3.getX() < 0 || d3.getY() < 0)
+            throw new RuntimeException("Координаты не могут быть отрицательными. Пожалуйста задайте другие координаты");
+        if (a == 0 || b == 0 || c == 0)
+            throw new RuntimeException("Это не треугольник. Пожалуйста задайте другие координаты");
+    }
+
     @Override
     public void calculateSquare() {
         setSquare((Math.abs((getDot2().getX() - getDot1().getX()) * (getDot3().getY() - getDot1().getY()) -
@@ -44,12 +56,9 @@ public class Triangle extends Figure {
 
     @Override
     public void move(double delta_x, double delta_y) {
-        Dot dot = getDot1();
-        setDot1(new Dot(dot.getX() + delta_x, dot.getY() + delta_y));
-        dot = getDot2();
-        setDot2(new Dot(dot.getX() + delta_x, dot.getY() + delta_y));
-        dot = getDot3();
-        setDot3(new Dot(dot.getX() + delta_x, dot.getY() + delta_y));
+        dot1.move(delta_x, delta_y);
+        dot2.move(delta_x, delta_y);
+        dot3.move(delta_x, delta_y);
     }
 
     public Ellipse getCircumscribedCircle() {
@@ -61,7 +70,7 @@ public class Triangle extends Figure {
         double B = -((q - p) * z * z + (p - s) * u * u + (s - q) * t * t + (q - p) * s * s + (p * p - q * q) * s + p * q * q - p * p * q) / v;
         double center_x = -A * 0.5;
         double center_y = -B * 0.5;
-        double radius = Math.sqrt(Math.pow(p - center_x, 2)+ Math.pow(t - center_y, 2));
+        double radius = Math.sqrt(Math.pow(p - center_x, 2) + Math.pow(t - center_y, 2));
         return new Ellipse(new Dot(center_x, center_y), radius, radius, 0);
     }
 
