@@ -9,9 +9,12 @@ public class Ellipse extends Figure {
     private Dot center;
 
     public Ellipse(Dot center, double small_radius, double big_radius, double rotation) {
+        check(center, small_radius, big_radius);
         this.small_radius = small_radius;
         this.big_radius = big_radius;
         this.center = center;
+        if (rotation < 0)
+            rotation += 360;
         this.rotation = rotation;
         calculateSquare();
     }
@@ -58,10 +61,14 @@ public class Ellipse extends Figure {
 
     @Override
     public void move(double delta_x, double delta_y) {
-        Dot current_center = getCenter();
-        setCenter(new Dot(current_center.getX() + delta_x, current_center.getY() + delta_y));
+        center.move(delta_x, delta_y);
     }
 
+    public void check(Dot c, double r1, double r2) {
+        if (c.getX() < 0 || c.getY() < 0 || r1 < 0 || r2 < 0)
+            throw new RuntimeException("Координаты и полуоси не могут быть отрицательными. " +
+                    "Пожалуйста задайте другие координаты или полуоси");
+    }
 
     @Override
     public String toString() {
