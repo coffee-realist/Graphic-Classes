@@ -10,17 +10,21 @@ public class Rectangle extends Figure {
     private final Dot center;
 
     public Rectangle(Dot dot1, Dot dot2, Dot dot3, Dot dot4) {
+        double width = Math.sqrt(Math.pow(dot1.getX() - dot4.getX(), 2) + Math.pow(dot1.getY() - dot4.getY(), 2));
+        double height = Math.sqrt(Math.pow(dot1.getX() - dot2.getX(), 2) + Math.pow(dot1.getY() - dot4.getY(), 2));
+        check(dot1, dot2, dot3, dot4, width, height);
         this.dot1 = dot1;
         this.dot2 = dot2;
         this.dot3 = dot3;
         this.dot4 = dot4;
-        double width = Math.sqrt(Math.pow(dot1.getX() - dot4.getX(), 2) + Math.pow(dot1.getY() - dot4.getY(), 2));
-        double height = Math.sqrt(Math.pow(dot1.getX() - dot2.getX(), 2) + Math.pow(dot1.getY() - dot4.getY(), 2));
         this.width = width;
         this.height = height;
-        check_dots();
-        this.rotation = -Math.acos((dot4.getX() - dot1.getX()) / width);
-        this.center = new Dot((dot3.getX() - dot1.getX()) / 2 + dot1.getX(), (dot3.getY() - dot1.getY()) / 2 + dot1.getY());
+        double rotation = -Math.acos((dot4.getX() - dot1.getX()) / width);
+        if (rotation < 0)
+            rotation += 360;
+        this.rotation = rotation;
+        this.center = new Dot((dot3.getX() - dot1.getX()) / 2 + dot1.getX(),
+                (dot3.getY() - dot1.getY()) / 2 + dot1.getY());
         this.diagonal = Math.sqrt(Math.pow(dot3.getX() - dot1.getX(), 2) + Math.pow(dot3.getY() - dot1.getY(), 2));
         calculateSquare();
     }
@@ -90,25 +94,24 @@ public class Rectangle extends Figure {
         setSquare(getHeight() * getWidth());
     }
 
-    public void check_dots() {
-        if ((!(getDot2().getX() - getDot1().getX() == getDot3().getX() - getDot4().getX() &&
-                getDot2().getY() - getDot1().getY() == getDot3().getY() - getDot4().getY() &&
-                getDot3().getX() - getDot2().getX() == getDot4().getX() - getDot1().getX() &&
-                getDot3().getY() - getDot2().getY() == getDot4().getY() - getDot1().getY())) ||
-                (getWidth() == 0) || (getHeight() == 0))
+    public void check(Dot d1, Dot d2, Dot d3, Dot d4, double width, double height) {
+        if (d1.getX() < 0 || d1.getY() < 0 || d2.getX() < 0 || d2.getY() < 0 ||
+                d3.getX() < 0 || d3.getY() < 0 || d4.getX() < 0 || d4.getY() < 0)
+            throw new RuntimeException("Координаты не могут быть отрицательными. Пожалуйста задайте другие координаты");
+        if ((!(d2.getX() - d1.getX() == d3.getX() - d4.getX() &&
+                d2.getY() - d1.getY() == d3.getY() - d4.getY() &&
+                d3.getX() - d2.getX() == d4.getX() - d1.getX() &&
+                d3.getY() - d2.getY() == d4.getY() - d1.getY())) ||
+                (width == 0) || (height == 0))
             throw new RuntimeException("Это не прямоугольник. Пожалуйста задайте другие координаты");
     }
 
     @Override
     public void move(double delta_x, double delta_y) {
-        Dot dot = getDot1();
-        setDot1(new Dot(dot.getX() + delta_x, dot.getY() + delta_y));
-        dot = getDot2();
-        setDot2(new Dot(dot.getX() + delta_x, dot.getY() + delta_y));
-        dot = getDot3();
-        setDot3(new Dot(dot.getX() + delta_x, dot.getY() + delta_y));
-        dot = getDot4();
-        setDot4(new Dot(dot.getX() + delta_x, dot.getY() + delta_y));
+        dot1.move(delta_x, delta_y);
+        dot2.move(delta_x, delta_y);
+        dot3.move(delta_x, delta_y);
+        dot4.move(delta_x, delta_y);
     }
 
     public Ellipse getCircumscribedCircle() {
