@@ -3,10 +3,10 @@ package lab1.graphics;
 import java.lang.Math;
 
 public class Ellipse extends Figure {
-    private double small_radius, big_radius;
+    private final double small_radius;
+    private final double big_radius;
     private final double rotation;
-    private double square;
-    private Dot center;
+    private final Dot center;
 
     public Ellipse(Dot center, double small_radius, double big_radius, double rotation) {
         check(center, small_radius, big_radius);
@@ -16,47 +16,16 @@ public class Ellipse extends Figure {
         if (rotation < 0)
             rotation += 360;
         this.rotation = rotation;
-        calculateSquare();
+        square = new Lazy<>(this::calculateSquare);
     }
 
-    public Dot getCenter() {
-        return center;
-    }
-
-    public double getSmall_radius() {
-        return small_radius;
-    }
-
-    public double getBig_radius() {
-        return big_radius;
-    }
-
-    public double getRotation() {
-        return rotation;
-    }
-
-    public void setCenter(Dot center) {
-        this.center = center;
-    }
-
-    public void setSmall_radius(double small_radius) {
-        this.small_radius = small_radius;
-    }
-
-    public void setBig_radius(double big_radius) {
-        this.big_radius = big_radius;
+    protected double calculateSquare() {
+        return (Math.PI * small_radius * big_radius);
     }
 
     @Override
-    public void calculateSquare() {
-        setSquare(Math.PI * small_radius * big_radius);
-    }
-
-    @Override
-    public void expandTo(double multiplier) {
-        setSmall_radius(getSmall_radius() * multiplier);
-        setBig_radius(getBig_radius() * multiplier);
-        calculateSquare();
+    public Ellipse expandTo(double multiplier) {
+        return new Ellipse(center, small_radius*multiplier, big_radius*multiplier, rotation);
     }
 
     @Override
@@ -70,15 +39,20 @@ public class Ellipse extends Figure {
                     "Пожалуйста задайте другие координаты или полуоси");
     }
 
+    public Ellipse getCircumscribedCircle() {
+        return new Ellipse(center, big_radius, big_radius, rotation);
+    }
+
     @Override
     public String toString() {
         return String.format("""
-                Класс Эллипса.
-                Координаты центра: %s
-                Малая полуось: %f.
+                Эллипс.
+                Координаты центра: %sМалая полуось: %f.
                 Большая полуось: %f.
                 Угол поворота: %f,
-                Площадь: %f""", getCenter().toString(), getSmall_radius(), getBig_radius(), getRotation(), getSquare());
+                Площадь: %f
+                                
+                """, center.toString(), small_radius, big_radius, rotation, getSquare());
     }
 
     @Override
