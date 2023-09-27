@@ -3,9 +3,13 @@ package lab1.graphics;
 import java.lang.Math;
 
 public class Rectangle extends Figure {
-    private Dot dot1, dot2, dot3, dot4;
+    private final Dot dot1;
+    private final Dot dot2;
+    private final Dot dot3;
+    private final Dot dot4;
     private final double rotation;
-    private double width, height;
+    private final double width;
+    private final double height;
     private final double diagonal;
     private final Dot center;
 
@@ -26,72 +30,12 @@ public class Rectangle extends Figure {
         this.center = new Dot((dot3.getX() - dot1.getX()) / 2 + dot1.getX(),
                 (dot3.getY() - dot1.getY()) / 2 + dot1.getY());
         this.diagonal = Math.sqrt(Math.pow(dot3.getX() - dot1.getX(), 2) + Math.pow(dot3.getY() - dot1.getY(), 2));
-        calculateSquare();
-    }
-
-    public double getDiagonal() {
-        return diagonal;
-    }
-
-    public double getRotation() {
-        return rotation;
-    }
-
-    public Dot getDot1() {
-        return dot1;
-    }
-
-    public Dot getDot2() {
-        return dot2;
-    }
-
-    public Dot getDot3() {
-        return dot3;
-    }
-
-    public Dot getDot4() {
-        return dot4;
-    }
-
-    public Dot getCenter() {
-        return center;
-    }
-
-    public double getHeight() {
-        return height;
-    }
-
-    public double getWidth() {
-        return width;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
-    }
-
-    public void setWidth(double width) {
-        this.width = width;
-    }
-
-    public void setDot1(Dot dot1) {
-        this.dot1 = dot1;
-    }
-
-    public void setDot2(Dot dot2) {
-        this.dot2 = dot2;
-    }
-
-    public void setDot3(Dot dot3) {
-        this.dot3 = dot3;
-    }
-
-    public void setDot4(Dot dot4) {
-        this.dot4 = dot4;
+        square = new Lazy<>(this::calculateSquare);
     }
 
     @Override
-    public void calculateSquare() {
-        setSquare(getHeight() * getWidth());
+    public double calculateSquare() {
+        return height * width;
     }
 
     public void check(Dot d1, Dot d2, Dot d3, Dot d4, double width, double height) {
@@ -115,31 +59,29 @@ public class Rectangle extends Figure {
     }
 
     public Ellipse getCircumscribedCircle() {
-        return new Ellipse(getCenter(), getDiagonal() * 0.5, getDiagonal() * 0.5, getRotation());
+        return new Ellipse(center, diagonal * 0.5, diagonal * 0.5, rotation);
     }
 
     @Override
-    public void expandTo(double multiplier) {
-        setWidth(getWidth() * multiplier);
-        setHeight(getHeight() * multiplier);
-        setDot1(new Dot((getDot1().getX() - getCenter().getX()) * multiplier,
-                (getDot1().getY() - getCenter().getY()) * multiplier));
-        setDot2(new Dot((getDot2().getX() - getCenter().getX()) * multiplier,
-                (getDot2().getY() - getCenter().getY()) * multiplier));
-        setDot3(new Dot((getDot3().getX() - getCenter().getX()) * multiplier,
-                (getDot3().getY() - getCenter().getY()) * multiplier));
-        setDot4(new Dot((getDot4().getX() - getCenter().getX()) * multiplier,
-                (getDot4().getY() - getCenter().getY()) * multiplier));
-        calculateSquare();
+    public Rectangle expandTo(double multiplier) {
+        return new Rectangle(new Dot((dot1.getX() - center.getX()) * multiplier,
+                (dot1.getY() - center.getY()) * multiplier),
+                new Dot((dot2.getX() - center.getX()) * multiplier,
+                (dot2.getY() - center.getY()) * multiplier),
+                new Dot((dot3.getX() - center.getX()) * multiplier,
+                (dot3.getY() - center.getY()) * multiplier),
+                new Dot((dot4.getX() - center.getX()) * multiplier,
+                (dot4.getY() - center.getY()) * multiplier));
     }
 
     @Override
     public String toString() {
         return String.format("""
-                        Класс Прямоугольника.
-                        Координаты точек: %s %s %s %s.
-                        Площадь: %f""", getDot1().toString(), getDot2().toString(),
-                getDot3().toString(), getDot4().toString(), getSquare());
+                        Прямоугольник.
+                        Координаты точек:
+                        %s%s%s%sПлощадь: %f
+                        """, dot1.toString(), dot2.toString(),
+                dot3.toString(), dot4.toString(), getSquare());
     }
 
     @Override
