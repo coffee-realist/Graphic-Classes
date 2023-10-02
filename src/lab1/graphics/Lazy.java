@@ -15,5 +15,4 @@ public class Lazy<T> {
         cached = producer.invoke();
         return cached;
     }
-
 }
