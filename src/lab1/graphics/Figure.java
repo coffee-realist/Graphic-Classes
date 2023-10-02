@@ -1,15 +1,16 @@
 package lab1.graphics;
 
 public abstract class Figure extends Drawable {
-    protected Lazy<Double> square;
+    private final Lazy<Double> square;
 
-    abstract protected double calculateSquare();
+    public Figure(Producer<Double> square_function){
+        square = new Lazy<>(square_function);
+    }
 
     public double getSquare(){
         return square.get();
     }
-    abstract public Ellipse getCircumscribedCircle();
     abstract public Figure expandTo(double multiplier);
-    abstract public void move(double delta_x, double delta_y);
+    abstract public Figure move(double delta_x, double delta_y);
 }
 
