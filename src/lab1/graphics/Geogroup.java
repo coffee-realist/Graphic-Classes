@@ -1,31 +1,27 @@
-package lab1;
-
-import lab1.graphics.Drawable;
-import lab1.graphics.Figure;
-import lab1.graphics.Lazy;
+package lab1.graphics;
 
 import java.util.*;
 
 public class Geogroup extends Drawable {
     private final ArrayList<Drawable> list;
-    protected Lazy<Double> square;
+    private double square;
 
     public Geogroup(Drawable... drawables) {
         this.list = new ArrayList<>();
         this.list.addAll(Arrays.asList(drawables));
-        square = new Lazy<>(this::calculateSquare);
     }
 
     public double getSquare() {
-        return square.get();
+        calculateSquare();
+        return square;
     }
 
-    public double calculateSquare() {
+    public void calculateSquare() {
         double new_square = 0;
         for (Drawable drawable : list)
             if (drawable instanceof Figure)
                 new_square += ((Figure) drawable).getSquare();
-        return new_square;
+        this.square = new_square;
     }
 
     public List<Drawable> getList() {
@@ -63,9 +59,11 @@ public class Geogroup extends Drawable {
     }
 
     @Override
-    public void move(double delta_x, double delta_y) {
+    public Geogroup move(double delta_x, double delta_y) {
+        Geogroup moved_geogroup = new Geogroup();
         for (Drawable drawable : list)
-            drawable.move(delta_x, delta_y);
+            moved_geogroup.add(drawable.move(delta_x, delta_y));
+        return moved_geogroup;
     }
 
     public Geogroup expandTo(double multiplier) {
@@ -79,8 +77,8 @@ public class Geogroup extends Drawable {
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();
-        for (Drawable drawable : list)
-            out.append(drawable.toString());
-        return "Группа фигур:\n" + out;
+        for (int i = 0; i < list.size(); i++)
+            out.append(String.format("(Элемент группы №%d).\n", i)).append(list.get(i).toString());
+        return "{{{\nГруппа фигур:\n" + out + "}}}";
     }
 }
