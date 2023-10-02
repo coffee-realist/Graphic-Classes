@@ -1,7 +1,8 @@
 package lab1.graphics;
 
 public class Dot extends Drawable {
-        private double x, y;
+    private final double x;
+    private final double y;
 
     public Dot(double x, double y) {
         this.x = x;
@@ -16,17 +17,28 @@ public class Dot extends Drawable {
         return y;
     }
 
-    public void setX(double x) {
-        this.x = x;
+    public Dot move(double delta_x, double delta_y) {
+        return new Dot(x + delta_x, y + delta_y);
     }
 
-    public void setY(double y) {
-        this.y = y;
+    public Dot plus(Dot dot2) {
+        return new Dot(x + dot2.getX(), y + dot2.getY());
     }
 
-    public void move(double delta_x, double delta_y) {
-        setX(x + delta_x);
-        setY(y + delta_y);
+    public Dot minus(Dot dot2) {
+        return new Dot(x - dot2.getX(), y - dot2.getY());
+    }
+
+    public double scalarProduct(Dot dot2) {
+        return x * dot2.getX() + y * dot2.getY();
+    }
+
+    public Dot product(double multiplier) {
+        return new Dot(x * multiplier, y * multiplier);
+    }
+
+    public double length(Dot dot2) {
+        return Math.sqrt(Math.pow(dot2.getX() - x, 2) + Math.pow(dot2.getY() - y, 2));
     }
 
     @Override
@@ -35,5 +47,6 @@ public class Dot extends Drawable {
     }
 
     @Override
-    public void draw() {}
+    public void draw() {
+    }
 }
