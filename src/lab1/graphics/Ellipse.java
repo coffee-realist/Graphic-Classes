@@ -9,34 +9,30 @@ public class Ellipse extends Figure {
     private final Dot center;
 
     public Ellipse(Dot center, double small_radius, double big_radius, double rotation) {
-        check(center, small_radius, big_radius);
+        super(() -> Math.PI * small_radius * big_radius);
+        check(small_radius, big_radius);
         this.small_radius = small_radius;
         this.big_radius = big_radius;
         this.center = center;
         if (rotation < 0)
             rotation += 360;
         this.rotation = rotation;
-        square = new Lazy<>(this::calculateSquare);
-    }
-
-    protected double calculateSquare() {
-        return (Math.PI * small_radius * big_radius);
     }
 
     @Override
     public Ellipse expandTo(double multiplier) {
-        return new Ellipse(center, small_radius*multiplier, big_radius*multiplier, rotation);
+        return new Ellipse(center, small_radius * multiplier, big_radius * multiplier, rotation);
     }
 
     @Override
-    public void move(double delta_x, double delta_y) {
-        center.move(delta_x, delta_y);
+    public Ellipse move(double delta_x, double delta_y) {
+        return new Ellipse(center.move(delta_x, delta_y), small_radius, big_radius, rotation);
     }
 
-    public void check(Dot c, double r1, double r2) {
-        if (c.getX() < 0 || c.getY() < 0 || r1 < 0 || r2 < 0)
-            throw new RuntimeException("Координаты и полуоси не могут быть отрицательными. " +
-                    "Пожалуйста задайте другие координаты или полуоси");
+    private void check(double r1, double r2) {
+        if (r1 < 0 || r2 < 0)
+            throw new RuntimeException("Полуоси не могут быть отрицательными. " +
+                    "Пожалуйста задайте другие значения полуосей");
     }
 
     public Ellipse getCircumscribedCircle() {
@@ -52,7 +48,7 @@ public class Ellipse extends Figure {
                 Угол поворота: %f,
                 Площадь: %f
                                 
-                """, center.toString(), small_radius, big_radius, rotation, getSquare());
+                """, center, small_radius, big_radius, rotation, getSquare());
     }
 
     @Override
