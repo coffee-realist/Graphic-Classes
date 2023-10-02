@@ -1,6 +1,6 @@
 package lab1.test;
 
-import lab1.Geogroup;
+import lab1.graphics.Geogroup;
 import lab1.graphics.Dot;
 import lab1.graphics.Ellipse;
 import lab1.graphics.Rectangle;
