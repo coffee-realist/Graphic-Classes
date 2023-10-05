@@ -1,13 +1,11 @@
 package lab1.test;
 
-import lab1.graphics.Geogroup;
+import lab1.RoundAboutAvailable;
 import lab1.graphics.Drawable;
-import lab1.graphics.Ellipse;
-import lab1.graphics.Rectangle;
-import lab1.graphics.Triangle;
+import lab1.graphics.Geogroup;
 
 public class Tests {
-    static public void movingTest(){
+    static public void movingTest() {
         System.out.println("-------- ТЕСТ НА ПЕРЕДВИЖЕНИЕ ФИГУР --------");
         Geogroup mixed = DrawableGenerator.mixedGroup();
         System.out.println(mixed);
@@ -15,7 +13,8 @@ public class Tests {
         System.out.println(mixed);
         System.out.println("-------- КОНЕЦ ТЕСТА --------");
     }
-    static public void squareTest(){
+
+    static public void squareTest() {
         System.out.println("-------- ТЕСТ НА ПОЛУЧЕНИЕ ПЛОЩАДЕЙ ФИГУР --------");
         Geogroup mixed = DrawableGenerator.mixedGroup();
         System.out.println(mixed);
@@ -28,20 +27,19 @@ public class Tests {
         System.out.println((square2 / square1) == 4);
         System.out.println("-------- КОНЕЦ ТЕСТА --------");
     }
-    static public void circumscribedCircleTest(){
+
+    static public void roundAboutTest() {
         System.out.println("-------- ТЕСТ НА ПОЛУЧЕНИЕ ОПИСАННЫХ ОКРУЖНОСТЕЙ ФИГУР --------");
         Geogroup mixed = DrawableGenerator.mixedGroup();
-            for (Drawable drawable: mixed.getList()){
-                if (drawable instanceof Rectangle)
-                    System.out.printf("Фигура:\n%s\nОписанная окружность фигуры:\n%s\n", drawable, ((Rectangle) drawable).getCircumscribedCircle());
-                else if (drawable instanceof Ellipse)
-                    System.out.printf("Фигура:\n%s\nОписанная окружность фигуры:\n%s\n", drawable, ((Ellipse) drawable).getCircumscribedCircle());
-                else if (drawable instanceof Triangle)
-                    System.out.printf("Фигура:\n%s\nОписанная окружность фигуры:\n%s\n", drawable, ((Triangle) drawable).getCircumscribedCircle());
+        for (Drawable drawable : mixed.getList()) {
+            if (drawable instanceof RoundAboutAvailable)
+                System.out.printf("Фигура:\n%s\nОписанная окружность фигуры:\n%s\n", drawable,
+                        ((RoundAboutAvailable) drawable).getRoundAbout());
         }
         System.out.println("-------- КОНЕЦ ТЕСТА --------");
     }
-    static public void describeNestedGroupsTest(){
+
+    static public void describeNestedGroupsTest() {
         System.out.println("-------- ТЕСТ НА ПОЛУЧЕНИЕ ОПИСАНИЯ ВЛОЖЕННЫХ ГРУПП --------");
         Geogroup nested_group = DrawableGenerator.nestedGroup();
         System.out.println(nested_group);
