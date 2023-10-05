@@ -1,8 +1,10 @@
 package lab1.graphics;
 
+import lab1.RoundAboutAvailable;
+
 import java.lang.Math;
 
-public class Rectangle extends Figure {
+public class Rectangle extends Figure implements RoundAboutAvailable {
     private final Dot dot1;
     private final Dot dot2;
     private final Dot dot3;
@@ -28,11 +30,13 @@ public class Rectangle extends Figure {
         this.diagonal = dot3.length(dot1);
     }
 
-
+    private boolean isEqual(double a, double b) {
+        return Math.abs(a - b) < 1e-5;
+    }
 
     private void check(Dot d1, Dot d2, Dot d3, Dot d4, double width, double height) {
-        if ((!(Double.compare(d1.length(d2), d3.length(d4)) == 0 && Double.compare(d2.length(d3), d1.length(d4)) == 0)) ||
-                Double.compare(width, 0) == 0 || Double.compare(height, 0) == 0 || !(Double.compare(d2.minus(d1).scalarProduct(d4.minus(d1)), 0) == 0))
+        if ((!(isEqual(d1.length(d2), d3.length(d4)) && isEqual(d2.length(d3), d1.length(d4)))) ||
+                isEqual(width, 0) || isEqual(height, 0)|| !(isEqual(d2.minus(d1).scalarProduct(d4.minus(d1)), 0)))
             throw new RuntimeException("Это не прямоугольник. Пожалуйста задайте другие координаты");
     }
 
@@ -42,7 +46,7 @@ public class Rectangle extends Figure {
                 dot3.move(delta_x, delta_y), dot4.move(delta_x, delta_y));
     }
 
-    public Ellipse getCircumscribedCircle() {
+    public Ellipse getRoundAbout() {
         return new Ellipse(center, diagonal * 0.5, diagonal * 0.5, rotation);
     }
 
