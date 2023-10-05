@@ -1,8 +1,10 @@
 package lab1.graphics;
 
+import lab1.RoundAboutAvailable;
+
 import java.lang.Math;
 
-public class Ellipse extends Figure {
+public class Ellipse extends Figure implements RoundAboutAvailable {
     private final double small_radius;
     private final double big_radius;
     private final double rotation;
@@ -35,7 +37,7 @@ public class Ellipse extends Figure {
                     "Пожалуйста задайте другие значения полуосей");
     }
 
-    public Ellipse getCircumscribedCircle() {
+    public Ellipse getRoundAbout() {
         return new Ellipse(center, big_radius, big_radius, rotation);
     }
 
