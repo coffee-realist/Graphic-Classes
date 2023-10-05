@@ -1,8 +1,10 @@
 package lab1.graphics;
 
+import lab1.RoundAboutAvailable;
+
 import java.lang.Math;
 
-public class Triangle extends Figure {
+public class Triangle extends Figure implements RoundAboutAvailable {
     private final Dot dot1;
     private final Dot dot2;
     private final Dot dot3;
@@ -20,17 +22,26 @@ public class Triangle extends Figure {
     }
 
     private void check(double a, double b, double c) {
-        if (Double.compare(a, 0) == 0 || Double.compare(b, 0) == 0 || Double.compare(c, 0) == 0
-                || Double.compare(a + b, c) <= 0 || Double.compare(a + c, b) <= 0 || Double.compare(b + c, a) <= 0)
+        if (isEqual(a, 0) || isEqual(b, 0) || isEqual(c, 0)
+                || isLowerOrEqual(a + b, c) || isLowerOrEqual(a + c, b) || isLowerOrEqual(b + c, a))
             throw new RuntimeException("Это не треугольник. Пожалуйста задайте другие координаты");
     }
+
+    private boolean isEqual(double a, double b) {
+        return Math.abs(a - b) < 1e-5;
+    }
+
+    private boolean isLowerOrEqual(double a, double b) {
+        return (b - a >= 1e-5) || (Math.abs(a - b) < 1e-5);
+    }
+
 
     @Override
     public Triangle move(double delta_x, double delta_y) {
         return new Triangle(dot1.move(delta_x, delta_y), dot2.move(delta_x, delta_y), dot3.move(delta_x, delta_y));
     }
 
-    public Ellipse getCircumscribedCircle() {
+    public Ellipse getRoundAbout() {
         // (x1, y1) (x2, y2) (x3, y3) for x^2 + y^2 + Ax + By + C
         double x1 = dot1.getX(), y1 = dot1.getY(), x2 = dot2.getX(), y2 = dot2.getY(),
                 x3 = dot3.getX(), y3 = dot3.getY();
@@ -45,7 +56,7 @@ public class Triangle extends Figure {
 
     @Override
     public Triangle expandTo(double multiplier) {
-        Dot mass_center = dot1.plus(dot2).plus(dot3).product(1d/3d);
+        Dot mass_center = dot1.plus(dot2).plus(dot3).product(1d / 3d);
         return new Triangle(dot1.minus(mass_center).product(multiplier), dot2.minus(mass_center).product(multiplier),
                 dot3.minus(mass_center).product(multiplier));
     }
