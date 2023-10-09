@@ -1,6 +1,6 @@
 package lab1.test;
 
-import lab1.RoundAboutAvailable;
+import lab1.graphics.RoundAboutAvailable;
 import lab1.graphics.Drawable;
 import lab1.graphics.Geogroup;
 
