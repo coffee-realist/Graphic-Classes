@@ -1,7 +1,5 @@
 package lab1.graphics;
 
-import lab1.RoundAboutAvailable;
-
 import java.lang.Math;
 
 public class Triangle extends Figure implements RoundAboutAvailable {
@@ -12,29 +10,22 @@ public class Triangle extends Figure implements RoundAboutAvailable {
     public Triangle(Dot dot1, Dot dot2, Dot dot3) {
         super(() -> (Math.abs((dot2.getX() - dot1.getX()) * (dot3.getY() - dot1.getY()) -
                 (dot3.getX() - dot1.getX()) * (dot2.getY() - dot1.getY()))) * 0.5);
-        double a = dot2.length(dot1);
-        double b = dot3.length(dot1);
-        double c = dot3.length(dot2);
-        check(a, b, c);
+        check(dot1, dot2, dot3);
         this.dot1 = dot1;
         this.dot2 = dot2;
         this.dot3 = dot3;
     }
 
-    private void check(double a, double b, double c) {
-        if (isEqual(a, 0) || isEqual(b, 0) || isEqual(c, 0)
-                || isLowerOrEqual(a + b, c) || isLowerOrEqual(a + c, b) || isLowerOrEqual(b + c, a))
+    private void check(Dot d1, Dot d2, Dot d3) {
+        Dot a = d2.minus(d1);
+        Dot b = d2.minus(d3);
+        if (isEqual(b.getX() * a.getY() - b.getY() * a.getX(), 0))
             throw new RuntimeException("Это не треугольник. Пожалуйста задайте другие координаты");
     }
 
     private boolean isEqual(double a, double b) {
         return Math.abs(a - b) < 1e-5;
     }
-
-    private boolean isLowerOrEqual(double a, double b) {
-        return (b - a >= 1e-5) || (Math.abs(a - b) < 1e-5);
-    }
-
 
     @Override
     public Triangle move(double delta_x, double delta_y) {
@@ -65,7 +56,7 @@ public class Triangle extends Figure implements RoundAboutAvailable {
     public String toString() {
         return String.format("""
                 Треугольник.
-                Координаты точек: %s %s %s.
+                Координаты точек: %s %s %s
                 Площадь: %f
                                 
                 """, dot1, dot2, dot3, getSquare());
