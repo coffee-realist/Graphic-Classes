@@ -1,7 +1,5 @@
 package lab1.graphics;
 
-import lab1.RoundAboutAvailable;
-
 import java.lang.Math;
 
 public class Ellipse extends Figure implements RoundAboutAvailable {
