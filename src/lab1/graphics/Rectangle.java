@@ -1,7 +1,5 @@
 package lab1.graphics;
 
-import lab1.RoundAboutAvailable;
-
 import java.lang.Math;
 
 public class Rectangle extends Figure implements RoundAboutAvailable {
@@ -64,6 +62,7 @@ public class Rectangle extends Figure implements RoundAboutAvailable {
                 Прямоугольник.
                 Координаты точек:
                 %s%s%s%sПлощадь: %f
+                
                 """, dot1, dot2, dot3, dot4, getSquare());
     }
 
