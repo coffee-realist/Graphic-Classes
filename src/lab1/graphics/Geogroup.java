@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Geogroup extends Drawable {
     private final ArrayList<Drawable> list;
-    private double square;
 
     public Geogroup(Drawable... drawables) {
         this.list = new ArrayList<>();
@@ -12,16 +11,11 @@ public class Geogroup extends Drawable {
     }
 
     public double getSquare() {
-        calculateSquare();
-        return square;
-    }
-
-    public void calculateSquare() {
         double new_square = 0;
         for (Drawable drawable : list)
             if (drawable instanceof Figure)
                 new_square += ((Figure) drawable).getSquare();
-        this.square = new_square;
+        return new_square;
     }
 
     public List<Drawable> getList() {
@@ -78,7 +72,7 @@ public class Geogroup extends Drawable {
     public String toString() {
         StringBuilder out = new StringBuilder();
         for (int i = 0; i < list.size(); i++)
-            out.append(String.format("(Элемент группы №%d).\n", i)).append(list.get(i).toString());
-        return "{{{\nГруппа фигур:\n" + out + "}}}";
+            out.append(String.format("(Элемент группы №%d).\n", i + 1)).append(list.get(i).toString());
+        return "[‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾Группа фигур‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾]\n" + out + "\n[________________Конец группы________________]\n";
     }
 }
