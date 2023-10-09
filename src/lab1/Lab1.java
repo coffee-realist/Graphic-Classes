@@ -6,8 +6,7 @@ public class Lab1 {
     public static void main(String[] args) {
         Tests.movingTest();
         Tests.squareTest();
-        Tests.circumscribedCircleTest();
+        Tests.roundAboutTest();
         Tests.describeNestedGroupsTest();
-        Tests.circumscribedCircleTest();
     }
 }
